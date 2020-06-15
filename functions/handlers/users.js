@@ -65,36 +65,36 @@ exports.requestOneTimePass = (req, res) => {
 };
 
 //verify one time password
-// exports.verifyoneTimePass = (req, res) => {
-//   if (!req.body.phone || !req.body.phone) {
-//     return res
-//       .status(422)
-//       .json({ error: "Phone number and code are required!" });
-//   }
-//   const phone = String(req.body.phone).replace(/[^\d]/g, "");
-//   const code = parseInt(req.body.code);
-//   admin
-//     .auth()
-//     .getUser(phone)
-//     .then(() => {
-//       db.doc(`/users/${phone}`).on("value", (snapshop) => {
-//         db.doc(`/users/${phone}`).off();
-//         const user = snapshop.val();
-//         if (user.code != code || !user.codeValid) {
-//           return res.status(422).json({ error: "Code is not valid!" });
-//         }
+exports.verifyoneTimePass = (req, res) => {
+  if (!req.body.phone || !req.body.phone) {
+    return res
+      .status(422)
+      .json({ error: "Phone number and code are required!" });
+  }
+  const phone = String(req.body.phone).replace(/[^\d]/g, "");
+  const code = parseInt(req.body.code);
+  admin
+    .auth()
+    .getUser(phone)
+    .then(() => {
+      db.doc(`/users/${phone}`).on("value", (snapshop) => {
+        db.doc(`/users/${phone}`).off();
+        const user = snapshop.val();
+        if (user.code != code || !user.codeValid) {
+          return res.status(422).json({ error: "Code is not valid!" });
+        }
 
-//         db.doc(`/users/${phone}`).update({ codeValid: false });
-//         admin
-//           .auth()
-//           .createCustomToken(phone)
-//           .then((token) => res.status(200).json({ token }))
-//           .catch((err) => {
-//             return res.status(422).json({ user: err });
-//           });
-//       });
-//     })
-//     .catch((err) => {
-//       return res.status(422).json({ user: err });
-//     });
-// };
+        db.doc(`/users/${phone}`).update({ codeValid: false });
+        admin
+          .auth()
+          .createCustomToken(phone)
+          .then((token) => res.status(200).json({ token }))
+          .catch((err) => {
+            return res.status(422).json({ user: err });
+          });
+      });
+    })
+    .catch((err) => {
+      return res.status(422).json({ user: err });
+    });
+};
