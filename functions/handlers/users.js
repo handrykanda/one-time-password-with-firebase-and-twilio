@@ -29,42 +29,42 @@ exports.signup = (req, res) => {
 };
 
 //request one time password
-// exports.requestOneTimePass = (req, res) => {
-//   if (!req.body.phone) {
-//     return res.status(422).json({ phone: "Phone number is required!" });
-//   }
+exports.requestOneTimePass = (req, res) => {
+  if (!req.body.phone) {
+    return res.status(422).json({ phone: "Phone number is required!" });
+  }
 
-//   const phone = String(req.body.phone).replace(/[^\d]/g, "");
+  const phone = String(req.body.phone).replace(/[^\d]/g, "");
 
-//   admin
-//     .auth()
-//     .getUser(phone)
-//     .then((userRecord) => {
-//       const code = Math.floor(Math.random() * 8999 + 1000);
-//       twilio.messages.create(
-//         {
-//           body: "Your code is " + code,
-//           to: phone,
-//           from: phoneNumber,
-//         },
-//         (err) => {
-//           if (err) {
-//             return res.status(422).json({ message: err });
-//           }
-//           db.doc(`/users/${phone}`).update({ code, codeValid: true }, () => {
-//             res
-//               .status(200)
-//               .json({ message: "Message sent to you succesfully" });
-//           });
-//         }
-//       );
-//     })
-//     .catch((err) => {
-//       return res.status(500).json({ user: err.code });
-//     });
-// };
+  admin
+    .auth()
+    .getUser(phone)
+    .then((userRecord) => {
+      const code = Math.floor(Math.random() * 8999 + 1000);
+      twilio.messages.create(
+        {
+          body: "Your code is " + code,
+          to: phone,
+          from: phoneNumber,
+        },
+        (err) => {
+          if (err) {
+            return res.status(422).json({ message: err });
+          }
+          db.doc(`/users/${phone}`).update({ code, codeValid: true }, () => {
+            res
+              .status(200)
+              .json({ message: "Message sent to you succesfully" });
+          });
+        }
+      );
+    })
+    .catch((err) => {
+      return res.status(500).json({ user: err.code });
+    });
+};
 
-// //verify one time password
+//verify one time password
 // exports.verifyoneTimePass = (req, res) => {
 //   if (!req.body.phone || !req.body.phone) {
 //     return res
