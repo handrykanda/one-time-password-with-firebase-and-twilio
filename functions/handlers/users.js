@@ -1,34 +1,34 @@
-// const { db, admin } = require("../util/admin");
-// const twilio = require("../util/twilio");
-// const { phoneNumber } = require("../util/twilioCred");
+const { db, admin } = require("../util/admin");
+const twilio = require("../util/twilio");
+const { phoneNumber } = require("../util/twilioCred");
 
-// // user sign up
-// exports.signup = (req, res) => {
-//   //verify the user provided a phone
-//   if (!req.body.phone) {
-//     return res.status(422).json({ phone: "Phone number is required!" });
-//   }
+// user sign up
+exports.signup = (req, res) => {
+  //verify the user provided a phone
+  if (!req.body.phone) {
+    return res.status(422).json({ phone: "Phone number is required!" });
+  }
 
-//   //format the phone number to remove dashes and parens
-//   const phone = String(req.body.phone).replace(/[^\d]/g, "");
+  //format the phone number to remove dashes and parens
+  const phone = String(req.body.phone).replace(/[^\d]/g, "");
 
-//   //create a user account using that phone
-//   admin
-//     .auth()
-//     .createUser({ uid: phone })
-//     .then((user) => res.status(201).json({ user }))
-//     .catch((err) => {
-//       if (err.code === "auth/uid-already-exists") {
-//         return res
-//           .status(400)
-//           .json({ phone: "Phone number is already in use" });
-//       } else {
-//         return res.status(500).json({ general: err });
-//       }
-//     });
-// };
+  //create a user account using that phone
+  admin
+    .auth()
+    .createUser({ uid: phone })
+    .then((user) => res.status(201).json({ user }))
+    .catch((err) => {
+      if (err.code === "auth/uid-already-exists") {
+        return res
+          .status(400)
+          .json({ phone: "Phone number is already in use" });
+      } else {
+        return res.status(500).json({ general: err });
+      }
+    });
+};
 
-// //request one time password
+//request one time password
 // exports.requestOneTimePass = (req, res) => {
 //   if (!req.body.phone) {
 //     return res.status(422).json({ phone: "Phone number is required!" });
