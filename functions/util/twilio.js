@@ -1,4 +1,4 @@
-// const twilio = require("twilio");
-// const { accountSid, authToken } = require("./twilioCred");
+const twilio = require("twilio");
+const { accountSid, authToken } = require("./twilioCred");
 
-// module.exports = new twilio.Twilio(accountSid, authToken);
+module.exports = new twilio.Twilio(accountSid, authToken);
